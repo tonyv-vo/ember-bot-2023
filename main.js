@@ -11,33 +11,29 @@ const prefix = config.prefix;
 commands = [
 	{
 		name: "help",
+		description: "Lists all commands this bot can run",
 		action: helpCmdHandler
 	},
 	{
 		name: "ask",
-		action: (msg, args) => {
-			createChannel(msg.guild)
-				.then(console.log)
-				.catch(failureCallBack);
-		}
+		description: "Ask a mentor for help with a coding question!",
+		action: askCmdHandler
 	}
 ];
 
 client.on("ready", () => {
 	console.log(`Logged in as ${client.user.tag}!`);
-	client.user
-		.setPresence({
-			activity: { name: `Type ${prefix}help` }
-		})
-		.then(console.log);
+	client.user.setPresence({
+		activity: { name: `Type ${prefix}help` }
+	});
 });
 
 client.on("message", msg => {
 	var channel = msg.channel;
 	var content = msg.content;
 
-	// TODO Add support for multi-char prefixes
-	if (content.substring(0, 1) !== prefix) {
+	// Validate message starts with command prefix
+	if (content.substring(0, prefix.length) !== prefix) {
 		return;
 	}
 
@@ -56,8 +52,20 @@ function helpCmdHandler(msg, args) {
 	);
 }
 
-function createChannel(guild) {
-	const channelManager = guild.channels;
+function askCmdHandler(msg, args) {
+	const channelManager = msg.guild.channels;
+	const voiceChannelCategory = channelManager.cache.find(
+		channel => channel.name == "Voice Channels"
+	);
+
+	channelManager
+		.create("test-channel", {
+			type: "voice",
+			parent: voiceChannelCategory
+		})
+		.then(console.log)
+		.catch(failureCallBack);
+
 	console.log(channelManager);
 }
 
