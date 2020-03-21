@@ -8,8 +8,28 @@ const prefix = config.prefix;
 // const pinEmojiIdentifier = config.pinEmojiIdentifier;
 // const pinLimit = config.pinLimit;
 
+commands = [
+	{
+		name: "help",
+		action: helpCmdHandler
+	},
+	{
+		name: "ask",
+		action: (msg, args) => {
+			createChannel(msg.guild)
+				.then(console.log)
+				.catch(failureCallBack);
+		}
+	}
+];
+
 client.on("ready", () => {
 	console.log(`Logged in as ${client.user.tag}!`);
+	client.user
+		.setPresence({
+			activity: { name: `Type ${prefix}help` }
+		})
+		.then(console.log);
 });
 
 client.on("message", msg => {
@@ -22,19 +42,24 @@ client.on("message", msg => {
 	}
 
 	var args = content.substring(1).split(" ");
-	var cmd = args[0];
+	const cmdName = args[0].toLowerCase();
 
-	switch (cmd.toLowerCase()) {
-		case "help":
-			sendMessage(
-				channel,
-				`Hello, I'm Ember by Schulich Ignite!\n` +
-					`To get started, type \`${config.prefix}help\` to see all available operations\n` +
-					`I'm still in beta right now, so please report any bugs you find to @RLee#4054. Enjoy!`
-			);
-			break;
-	}
+	commands.find(cmd => cmd.name === cmdName).action.call(null, msg, args);
 });
+
+function helpCmdHandler(msg, args) {
+	sendMessage(
+		msg.channel,
+		`Hello, I'm Ember by Schulich Ignite!\n` +
+			`To get started, type \`${config.prefix}help\` to see all available operations\n` +
+			`I'm still in beta right now, so please report any bugs you find to @RLee#4054. Enjoy!`
+	);
+}
+
+function createChannel(guild) {
+	const channelManager = guild.channels;
+	console.log(channelManager);
+}
 
 function sendMessage(channel, messageContent) {
 	channel.send(messageContent).catch(failureCallBack);
