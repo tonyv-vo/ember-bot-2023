@@ -1,0 +1,7 @@
+node_modules/
+
+start.bat
+.DS_Store
+
+# Authentication information. NEVER add this file to any repository!
+auth.json
