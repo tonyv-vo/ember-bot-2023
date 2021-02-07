@@ -40,8 +40,8 @@ class Admin(commands.Cog):
                 iter_name = name.replace(wildcard, str(i + 1))
                 await self.make_group(ctx, iter_name, category)
             embed.add_field(name='Groups successfully created!',
-                            value='[{first}], [{last}]'.format(first=name.replace(wildcard, '1'),
-                                                               last=name.replace(wildcard, str(num))))
+                            value='{first}\n...\n{last}'.format(first=name.replace(wildcard, '1'),
+                                                           last=name.replace(wildcard, str(num))))
             return await ctx.send(embed=embed)
         # else
         embed.add_field(name='Group creation failed!',
@@ -71,10 +71,10 @@ class Admin(commands.Cog):
             if group == channel.name and group not in ['Exec', 'President', 'Mentor']:
                 # It will attempt to give them the role with the same channel name
                 embed.add_field(name='Role added!', value=group)
-                await ctx.send(embed)
+                await ctx.send(embed=embed)
                 return await ctx.author.add_roles(discord.utils.get(ctx.guild.roles, name=group))
         embed.add_field(name='Role could not be added!', value=group)
-        return await ctx.send(embed)
+        return await ctx.send(embed=embed)
 
     async def delete(self, ctx, name):
         pass
