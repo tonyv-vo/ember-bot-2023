@@ -41,7 +41,7 @@ class Admin(commands.Cog):
                 await self.make_group(ctx, iter_name, category)
             embed.add_field(name='Groups successfully created!',
                             value='{first}\n...\n{last}'.format(first=name.replace(wildcard, '1'),
-                                                           last=name.replace(wildcard, str(num))))
+                                                                last=name.replace(wildcard, str(num))))
             return await ctx.send(embed=embed)
         # else
         embed.add_field(name='Group creation failed!',
