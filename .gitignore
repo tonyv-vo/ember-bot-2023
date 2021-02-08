@@ -5,5 +5,3 @@ start.bat
 
 # Authentication information. NEVER add this file to any repository!
 auth.json
-settings/config.json
-.idea
