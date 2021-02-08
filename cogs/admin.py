@@ -10,17 +10,27 @@ class Admin(commands.Cog):
     @commands.command(aliases=['g', 'groups'])
     async def group(self, ctx, cmd, *args):
         """Makes new groups (role and channel) for each semester"""
+        embed = discord.Embed(color=discord.Colour.orange())
         is_admin = ctx.message.author.guild_permissions.administrator
         # First make sure the author should be allowed to do any of this
+        # TODO: Clean up subcommands using proper discord.py implementation
         if is_admin:
             if cmd in ['n', 'new']:
-                await self.new(ctx, *args)
+                return await self.new(ctx, *args)
             elif cmd in ['d', 'del', 'delete']:
-                await self.delete(ctx, *args)
+                return await self.delete(ctx, *args)
             elif cmd in ['c', 'clear']:
-                await self.clear(ctx, *args)
+                return await self.clear(ctx, *args)
+            embed.add_field(name='Command not found!',
+                            value='!group new [name] [#] (Make sure [name] includes a "?" if making 2+ groups)\n' +
+                                  '!group set [name] (Add yourself to a group)')
+            return await ctx.send(embed=embed)
         if cmd in ['s', 'set']:
-            await self.set(ctx, *args)
+            return await self.set(ctx, *args)
+        # If no command has been run yet...
+        embed.add_field(name='Command not found!',
+                        value='!group set [name] (Add yourself to a group)')
+        return await ctx.send(embed=embed)
 
     async def new(self, ctx, name, num=None):
         # Wildcard character is '?'
@@ -68,7 +78,8 @@ class Admin(commands.Cog):
     async def set(self, ctx, group):
         embed = discord.Embed(color=discord.Colour.orange())
         for channel in ctx.guild.channels:
-            if group == channel.name and group not in ['Exec', 'President', 'Mentor']:
+            if (group == channel.name and
+                    group.lower() not in ['exec', 'president', 'mentor', 'lecture lead', 'jr exec']):
                 # It will attempt to give them the role with the same channel name
                 embed.add_field(name='Role added!', value=group)
                 await ctx.send(embed=embed)
@@ -76,11 +87,17 @@ class Admin(commands.Cog):
         embed.add_field(name='Role could not be added!', value=group)
         return await ctx.send(embed=embed)
 
-    async def delete(self, ctx, name):
-        pass
+    async def delete(self, ctx, *args):
+        # TODO: Make "delete" command
+        embed = discord.Embed(color=discord.Colour.orange())
+        embed.add_field(name='Command is under construction...', value='')
+        return await ctx.send(embed=embed)
 
-    async def clear(self, *args):
-        pass
+    async def clear(self, ctx, *args):
+        # TODO: Make "clear" command
+        embed = discord.Embed(color=discord.Colour.orange())
+        embed.add_field(name='Command is under construction...', value='')
+        return await ctx.send(embed=embed)
 
 
 def setup(bot):

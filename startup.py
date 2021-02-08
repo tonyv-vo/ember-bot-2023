@@ -9,7 +9,7 @@ from cogs.utils.config import *
 # First time run config
 def wizard():
     config = {}
-    print('Welcome to AlanAyy\'s Ignite-Ember setup!')
+    print('Welcome to the Ignite-Ember Discord Bot setup!')
     print('Please enter the bot\'s token:')
     config['token'] = input('| ').strip().strip('"')
 
@@ -31,7 +31,7 @@ except IOError:
 logging.basicConfig(level=logging.INFO)
 bot = commands.Bot(
     command_prefix=get_config_value('config', 'prefix'),
-    description='''Ignite-Ember by AlanAyy (https://www.alanayy.com/)'''
+    description='''Ignite-Ember by Schulich Ignite'''
 )
 
 # Time to load our modules :D
