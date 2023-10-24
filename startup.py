@@ -1,6 +1,7 @@
 import logging
 import os
 
+import discord
 from discord.ext import commands
 
 from cogs.utils.config import *
@@ -29,9 +30,12 @@ except IOError:
 
 # Now that all the setup's finished, we're good to go!
 logging.basicConfig(level=logging.INFO)
+# 2023 update: discord > 2.0.0 requires intents
+intents = discord.Intents.all()
 bot = commands.Bot(
     command_prefix=get_config_value('config', 'prefix'),
-    description='''Ignite-Ember by Schulich Ignite'''
+    description='''Ignite-Ember by Schulich Ignite''',
+    intents=intents
 )
 
 # Time to load our modules :D
